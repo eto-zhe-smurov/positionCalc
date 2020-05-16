@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <title>Калькулятор позиции</title>
+  </head>
+  <body class="body">
+    <div class="container">
+        <div class="row initVariables">
+            <div class="col initVariableItem">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Депозит</h5>
+                        <input type="number" min="0" class="form-control" id="initVariableDeposit">
+                    </div>
+                </div>
+            </div>
+            <div class="col initVariableItem">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Точка входа</h5>
+                        <input type="number" min="0" class="form-control" id="initVariablePointOfEntry">
+                    </div>
+                </div>
+            </div>
+            <div class="col initVariableItem">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Стоп-лосс</h5>
+                        <input type="number" min="0" class="form-control" id="initVariableStopLoss">
+                    </div>
+                </div>
+            </div>
+            <div class="col initVariableItem">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Размер риска в %</h5>
+                        <input type="number" min="0" class="form-control" id="initVariableRisk">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row positionSize">
+            <div class="col">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title positionSizeValue" id="positionSize">0</h5>
+                        <p class="card-text positionSizeLabel">Размер позиции</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script>
+        const initVariableDeposit = document.querySelector('#initVariableDeposit');
+        const initVariablePointOfEntry = document.querySelector('#initVariablePointOfEntry');
+        const initVariableStopLoss = document.querySelector('#initVariableStopLoss');
+        const initVariableRisk = document.querySelector('#initVariableRisk');
+        const positionSize = document.querySelector('#positionSize');
+        let initVariableDepositValue = null;
+        let initVariablePointOfEntryValue = null;
+        let initVariableStopLossValue = null;
+        let initVariableRiskValue = null;
+        let positionSizeValue = null;
+
+        const tryCalculatePositionSize = (event) => {
+            if (event.target.id === 'initVariableDeposit') initVariableDepositValue = event.target.value;
+            if (event.target.id === 'initVariablePointOfEntry') initVariablePointOfEntryValue = event.target.value;
+            if (event.target.id === 'initVariableStopLoss') initVariableStopLossValue = event.target.value;
+            if (event.target.id === 'initVariableRisk') initVariableRiskValue = event.target.value;
+
+            console.log(initVariableDepositValue, initVariablePointOfEntryValue, initVariableStopLossValue, initVariableRiskValue);
+            if (initVariableDepositValue, initVariablePointOfEntryValue, initVariableStopLossValue, initVariableRiskValue)
+                positionSizeValue = initVariablePointOfEntryValue*((initVariableDepositValue/100*initVariableRiskValue)/(initVariablePointOfEntryValue-initVariableStopLossValue));
+            else 
+                positionSizeValue = 0;
+
+            
+            positionSize.innerHTML = Math.abs(positionSizeValue);
+            if (positionSizeValue > 0) positionSize.style.color = 'rgb(77,171,154)';
+            if (positionSizeValue < 0) positionSize.style.color = 'rgb(255,115,105)';
+            if (positionSizeValue === 0) positionSize.style.color = '';
+        }
+
+        initVariableDeposit.addEventListener('input', tryCalculatePositionSize);
+        initVariablePointOfEntry.addEventListener('input', tryCalculatePositionSize);
+        initVariableStopLoss.addEventListener('input', tryCalculatePositionSize);
+        initVariableRisk.addEventListener('input', tryCalculatePositionSize);
+    </script>
+  </body>
+</html>
